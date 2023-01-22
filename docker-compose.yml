@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+    web:
+        build: "./docker/apache"
+        ports:
+            - 8080:80
+        working_dir: /usr/local/apache2/htdocs
+        volumes:
+            - ./api:/usr/local/apache2/htdocs
+            - ./api:/var/www
