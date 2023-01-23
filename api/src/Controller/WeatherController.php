@@ -23,8 +23,7 @@ class WeatherController extends AbstractFOSRestController
     public function getPrediction(Request $request)
     {
         $data = ['prediction' => $this->predictor->predict()];
-        $view = $this->view($data, 200);
 
-        return $this->handleView($view);
+        return $this->json($data);
     }
 }
