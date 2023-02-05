@@ -15,16 +15,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getPredictionListener(view: View) {
+        getPrediction()
+    }
+
+    fun getPrediction() {
         val textView = findViewById<TextView>(R.id.tv_prediction)
 
         val queue = Volley.newRequestQueue(this)
-        val url = "http://http://localhost:8080/predict"
+        val url = "http://192.168.33.5:8080/predict"
 
         val stringRequest = StringRequest(
             Request.Method.GET,
             url,
             { response -> textView.text = String.format(getString(R.string.response_success), response) },
-            { textView.text = getString(R.string.response_fail) }
+            { error -> textView.text = error.toString() }
         )
 
         queue.add(stringRequest)
