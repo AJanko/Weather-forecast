@@ -24,7 +24,7 @@ services:
         arguments:
             $config:
                 projectId: '%env(BIG_QUERY_PROJECT_ID)%'
-                keyFilePath: '.google-key.json'
+                keyFilePath: '../.google-key.json'
 
     App\Service\OpenWeather:
         arguments:
