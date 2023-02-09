@@ -10,4 +10,4 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
-.google-key.json
+/config/.google-key.json

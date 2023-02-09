@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Service\Predictor;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use Symfony\Component\HttpFoundation\Request;
 
 class WeatherController extends AbstractFOSRestController
 {
@@ -19,10 +18,10 @@ class WeatherController extends AbstractFOSRestController
         $this->predictor = $predictor;
     }
 
-    /** @Rest\Get("/predict", name="predict_weather") */
-    public function getPrediction(Request $request)
+    /** @Rest\Get("/predict/{lat}/{lon}", name="predict_weather") */
+    public function getPrediction(string $lat, string $lon)
     {
-        $data = ['prediction' => $this->predictor->predict()];
+        $data = ['prediction' => $this->predictor->predict($lat, $lon)];
 
         return $this->json($data);
     }
