@@ -8,6 +8,9 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 
 class WeatherController extends AbstractFOSRestController
 {
+    const WILL_RAIN = "There will be rain today";
+    const WONT_RAIN = "No rain for today :)";
+
     /**
      * @var Predictor
      */
@@ -21,8 +24,6 @@ class WeatherController extends AbstractFOSRestController
     /** @Rest\Get("/predict/{lat}/{lon}", name="predict_weather") */
     public function getPrediction(string $lat, string $lon)
     {
-        $data = ['prediction' => $this->predictor->predict($lat, $lon)];
-
-        return $this->json($data);
+        return $this->json($this->predictor->predict($lat, $lon) ? self::WILL_RAIN : self::WONT_RAIN);
     }
 }
