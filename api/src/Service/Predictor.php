@@ -15,11 +15,8 @@ class Predictor
         $this->openWeather = $openWeather;
     }
 
-    public function predict(): bool
+    public function predict(string $lat, string $lon): bool
     {
-        $lat = 50.049683;
-        $lon = 19.944544;
-
         $currentWeather = $this->openWeather->getCurrentWeather($lat, $lon);
         $mappedWeather  = WeatherDataMapper::map($currentWeather);
 

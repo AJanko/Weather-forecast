@@ -6,6 +6,8 @@ use GuzzleHttp\Client;
 
 class OpenWeather
 {
+    private const URI = "https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&appid=%s";
+
     /** @var Client */
     private $client;
     /** @var string */
@@ -21,7 +23,7 @@ class OpenWeather
     {
         $request = $this->client->request(
             'GET',
-            "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$this->apiKey"
+            sprintf(self::URI, $lat, $lon, $this->apiKey)
         );
 
         return json_decode($request->getBody()->getContents(), true);
