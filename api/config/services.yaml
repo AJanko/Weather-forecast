@@ -24,13 +24,11 @@ services:
         arguments:
             $config:
                 projectId: '%env(BIG_QUERY_PROJECT_ID)%'
-                keyFilePath: '../.google-key.json'
+                keyFilePath: '%kernel.project_dir%/config/.google-key.json'
 
     App\Service\OpenWeather:
         arguments:
             $apiKey: '%env(OPEN_WEATHER_API_KEY)%'
-
-
 
     GuzzleHttp\Client:
 

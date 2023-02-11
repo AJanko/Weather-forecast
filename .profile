@@ -13,3 +13,7 @@ dstop() {
 getip() {
     ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}'
 }
+
+wTest() {
+    php api/bin/console bq:test
+}
