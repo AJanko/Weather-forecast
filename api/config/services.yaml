@@ -28,7 +28,9 @@ services:
 
     App\Repository\BigQueryRepository:
         arguments:
+            $projectId: '%env(BIG_QUERY_PROJECT_ID)%'
             $modelId: '%env(BIG_QUERY_MODEL_ID)%'
+            $trainingTableId: '%env(BIG_QUERY_TRAINING_TABLE)%'
 
     App\Service\OpenWeather:
         arguments:
