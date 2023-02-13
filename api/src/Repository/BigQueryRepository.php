@@ -23,6 +23,7 @@ class BigQueryRepository
 
     public function getWeatherPrediction(array $currentWeather): bool
     {
+        // weather prediction based on old model
         $modelId = $this->getStructureId($this->modelId);
 
         $airTemp       = $currentWeather['temperature_air_2m_f'];
@@ -57,6 +58,7 @@ ENDSQL;
     /** @param array<int, WeatherData> $data */
     public function uploadTrainingData(array $data): void
     {
+        // training data for new model
         $trainingTableId = $this->getStructureId($this->trainingTableId);
 
         $values = implode(
