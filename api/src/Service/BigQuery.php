@@ -9,7 +9,7 @@ class BigQuery
 {
     private BigQueryClient $client;
 
-    public function __construct(BigQueryClient $client, string $modelId)
+    public function __construct(BigQueryClient $client)
     {
         $this->client = $client;
     }

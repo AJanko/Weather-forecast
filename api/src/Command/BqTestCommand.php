@@ -15,8 +15,7 @@ class BqTestCommand extends Command
     protected static $defaultName        = 'bq:test';
     protected static $defaultDescription = 'Test connection to big query API';
 
-    /** @var Predictor */
-    private $predictor;
+    private Predictor $predictor;
 
     /** @required */
     public function setDependencies(Predictor $predictor)

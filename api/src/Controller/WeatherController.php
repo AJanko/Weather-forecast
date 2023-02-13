@@ -11,10 +11,7 @@ class WeatherController extends AbstractFOSRestController
     const WILL_RAIN = "There will be rain today";
     const WONT_RAIN = "No rain for today :)";
 
-    /**
-     * @var Predictor
-     */
-    private $predictor;
+    private Predictor $predictor;
 
     public function __construct(Predictor $predictor)
     {
