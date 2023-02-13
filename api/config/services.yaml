@@ -26,6 +26,10 @@ services:
                 projectId: '%env(BIG_QUERY_PROJECT_ID)%'
                 keyFilePath: '%kernel.project_dir%/config/.google-key.json'
 
+    App\Repository\BigQueryRepository:
+        arguments:
+            $modelId: '%env(BIG_QUERY_MODEL_ID)%'
+
     App\Service\OpenWeather:
         arguments:
             $apiKey: '%env(OPEN_WEATHER_API_KEY)%'
