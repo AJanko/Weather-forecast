@@ -18,27 +18,13 @@ class OpenWeather
         $this->apiKey = $apiKey;
     }
 
-    public function getCurrentWeather(string $lat, string $lon): WeatherData
+    public function requestData(string $url): array
     {
         $request = $this->client->request(
             'GET',
-            sprintf(self::URI, $lat, $lon, $this->apiKey)
+            $url . '&appid=' . $this->apiKey
         );
 
-        return $this->createWeatherDataInstance(json_decode($request->getBody()->getContents(), true));
-    }
-
-    private function createWeatherDataInstance(array $data): WeatherData
-    {
-        return new WeatherData(
-            $data['main']['temp'],
-            $data['main']['feels_like'],
-            $data['main']['relative_humidity'],
-            $data['clouds']['all'],
-            $data['wind']['speed'],
-            $data['wind']['gust'],
-            $data['rain']['1h'] ?? 0,
-            $data['visibility']
-        );
+        return json_decode($request->getBody()->getContents(), true);
     }
 }
