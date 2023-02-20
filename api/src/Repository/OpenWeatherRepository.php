@@ -27,7 +27,8 @@ class OpenWeatherRepository
         return $this->createWeatherDataInstance($data);
     }
 
-    public function getHistoricData(string $lat, string $lon, string $start, string $end)
+    /** @return array<int, WeatherData> */
+    public function getHistoricData(string $lat, string $lon, string $start, string $end): array
     {
         $data = $this->client->requestData(
             sprintf(self::CURRENT_WEATHER_URI, $lat, $lon, $start, $end)
