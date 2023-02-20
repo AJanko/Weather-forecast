@@ -5,7 +5,9 @@ namespace App\Command;
 use App\Repository\BigQueryRepository;
 use App\Repository\OpenWeatherRepository;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class OpenWeatherTrainingCommand extends Command
@@ -28,6 +30,17 @@ class OpenWeatherTrainingCommand extends Command
     ) {
         $this->bigQueryRepository    = $bigQueryRepository;
         $this->openWeatherRepository = $openWeatherRepository;
+        $this->lat                   = $lat;
+        $this->lon                   = $lon;
+    }
+
+    protected function configure()
+    {
+        parent::configure();
+
+        $this
+            ->addOption('start', 'st', InputOption::VALUE_REQUIRED)
+            ->addOption('end', 'end', InputOption::VALUE_REQUIRED);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
