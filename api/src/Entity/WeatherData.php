@@ -12,6 +12,7 @@ class WeatherData
     private float $windGust;
     private float $rain;
     private float $visibility;
+    private int   $timestamp;
 
     private ?bool $willRain;  // prediction for the day after
 
@@ -24,6 +25,7 @@ class WeatherData
         float $windGust,
         float $rain,
         float $visibility,
+        int $timestamp
     ) {
         $this->temperature      = $temperature;
         $this->feelTemperature  = $feelTemperature;
@@ -33,6 +35,7 @@ class WeatherData
         $this->windGust         = $windGust;
         $this->rain             = $rain;
         $this->visibility       = $visibility;
+        $this->timestamp        = $timestamp;
     }
 
     public function getTemperature(): float
@@ -123,5 +126,15 @@ class WeatherData
     public function setWillRain(bool $willRain): void
     {
         $this->willRain = $willRain;
+    }
+
+    public function getTimestamp(): int
+    {
+        return $this->timestamp;
+    }
+
+    public function setTimestamp(int $timestamp): void
+    {
+        $this->timestamp = $timestamp;
     }
 }

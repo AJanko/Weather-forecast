@@ -8,5 +8,6 @@ CREATE TABLE `weatherforecastlr.weather.training_data` (
    `rain` DECIMAL(4,3) NOT NULL,
    `visibility` DECIMAL(4,3) NOT NULL,
    `split_col` DECIMAL(4,3) NOT NULL,
+   `timestamp` INT(12) NOT NULL,
    `will_rain` TINYINT NOT NULL
 );

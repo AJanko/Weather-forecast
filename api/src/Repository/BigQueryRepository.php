@@ -76,6 +76,7 @@ ENDSQL;
                             $weatherData->getWindGust(),
                             $weatherData->getRain(),
                             $weatherData->getVisibility(),
+                            $weatherData->getTimestamp(),
                             $weatherData->isWillRain(),
                             rand(),
                         ]
@@ -93,6 +94,7 @@ INSERT INTO `$trainingTableId` (
     wind_gust,
     rain,
     visibility,
+    timestamp,
     will_rain,
     split_col
 ) VALUES %s
