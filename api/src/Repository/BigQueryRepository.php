@@ -21,30 +21,31 @@ class BigQueryRepository
         $this->projectId       = $projectId;
     }
 
-    public function getWeatherPrediction(array $currentWeather): bool
+    public function getWeatherPrediction(WeatherData $currentWeather): bool
     {
-        // weather prediction based on old model
         $modelId = $this->getStructureId($this->modelId);
 
-        $airTemp       = $currentWeather['temperature_air_2m_f'];
-        $windChillTemp = $currentWeather['temperature_windchill_2m_f'];
-        $heatIndexTemp = $currentWeather['temperature_heatindex_2m_f'];
-        $gpkgHumidity  = $currentWeather['humidity_specific_2m_gpkg'];
-        $pctHumidity   = $currentWeather['humidity_relative_2m_pct'];
-        $windSpeed     = $currentWeather['wind_speed_10m_mph'];
-        $cloudCover    = $currentWeather['cloud_cover_pct'];
+        $temp       = $currentWeather->getTemperature();
+        $feelTemp   = $currentWeather->getFeelTemperature();
+        $humid      = $currentWeather->getRelativeHumidity();
+        $clouds     = $currentWeather->getCloudCover();
+        $windSpeed  = $currentWeather->getWindSpeed();
+        $windGust   = $currentWeather->getWindGust();
+        $rain       = $currentWeather->getRain();
+        $visibility = $currentWeather->getVisibility();
 
         $query = <<<ENDSQL
 SELECT * FROM ML.PREDICT(
    MODEL `$modelId`,
    (
-       SELECT $airTemp AS temperature_air_2m_f,
-       $windChillTemp AS temperature_windchill_2m_f,
-       $heatIndexTemp AS temperature_heatindex_2m_f,
-       $gpkgHumidity AS humidity_specific_2m_gpkg,
-       $pctHumidity AS humidity_relative_2m_pct,
-       $windSpeed AS wind_speed_10m_mph,
-       $cloudCover AS cloud_cover_pct,
+        SELECT $temp AS temperature,
+        $feelTemp AS feel_temperature,
+        $humid AS relative_humidity,
+        $clouds AS cloud_cover,
+        $windSpeed AS wind_speed,
+        $windGust AS wind_gust,
+        $rain AS rain,
+        $visibility AS visibility,
    )
 );
 ENDSQL;
@@ -75,7 +76,6 @@ ENDSQL;
                             $weatherData->getWindGust(),
                             $weatherData->getRain(),
                             $weatherData->getVisibility(),
-                            $weatherData->getDewPoint(),
                             $weatherData->isWillRain(),
                             rand(),
                         ]
@@ -93,7 +93,6 @@ INSERT INTO `$trainingTableId` (
     wind_gust,
     rain,
     visibility,
-    dew_point,
     will_rain,
     split_col
 ) VALUES %s

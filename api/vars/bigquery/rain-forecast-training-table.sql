@@ -7,7 +7,6 @@ CREATE TABLE `weatherforecastlr.weather.training_data` (
    `wind_gust` DECIMAL(4,3) NOT NULL,
    `rain` DECIMAL(4,3) NOT NULL,
    `visibility` DECIMAL(4,3) NOT NULL,
-   `dew_point` DECIMAL(4,3) NOT NULL,
    `split_col` DECIMAL(4,3) NOT NULL,
    `will_rain` TINYINT NOT NULL
 );

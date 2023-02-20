@@ -12,9 +12,28 @@ class WeatherData
     private float $windGust;
     private float $rain;
     private float $visibility;
-    private float $dewPoint;
 
-    private bool $willRain;  // prediction for the day after
+    private ?bool $willRain;  // prediction for the day after
+
+    public function __construct(
+        float $temperature,
+        float $feelTemperature,
+        float $relativeHumidity,
+        float $cloudCover,
+        float $windSpeed,
+        float $windGust,
+        float $rain,
+        float $visibility,
+    ) {
+        $this->temperature      = $temperature;
+        $this->feelTemperature  = $feelTemperature;
+        $this->relativeHumidity = $relativeHumidity;
+        $this->cloudCover       = $cloudCover;
+        $this->windSpeed        = $windSpeed;
+        $this->windGust         = $windGust;
+        $this->rain             = $rain;
+        $this->visibility       = $visibility;
+    }
 
     public function getTemperature(): float
     {
@@ -94,16 +113,6 @@ class WeatherData
     public function setVisibility(float $visibility): void
     {
         $this->visibility = $visibility;
-    }
-
-    public function getDewPoint(): float
-    {
-        return $this->dewPoint;
-    }
-
-    public function setDewPoint(float $dewPoint): void
-    {
-        $this->dewPoint = $dewPoint;
     }
 
     public function isWillRain(): bool

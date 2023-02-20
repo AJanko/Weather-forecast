@@ -1,4 +1,4 @@
-CREATE MODEL `weather.rain_forecast.forecast_model`
+CREATE MODEL `weatherforecastlr.weather.rain_forecast_model`
 OPTIONS (
    MODEL_TYPE='LOGISTIC_REG',
    DATA_SPLIT_METHOD='SEQ',
@@ -15,7 +15,6 @@ SELECT
     wind_gust, -- km/h
     rain, -- mm
     visibility, -- km
-    dew_point, -- celsius
     RAND() AS split_col,
     will_rain -- bool
-FROM `weather.rain_forecast.training_data` td;
+FROM `weatherforecastlr.weather.training_data` td;

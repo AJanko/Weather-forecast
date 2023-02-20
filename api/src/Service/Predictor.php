@@ -18,8 +18,7 @@ class Predictor
     public function predict(string $lat, string $lon): bool
     {
         $currentWeather = $this->openWeather->getCurrentWeather($lat, $lon);
-        $mappedWeather  = WeatherDataMapper::map($currentWeather);
 
-        return $this->repository->getWeatherPrediction($mappedWeather);
+        return $this->repository->getWeatherPrediction($currentWeather);
     }
 }
