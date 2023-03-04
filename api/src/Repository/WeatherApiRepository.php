@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\WeatherData;
 use App\Service\WeatherApi;
 
-class WeatherApiRepository
+class WeatherApiRepository implements WeatherRepositoryInterface
 {
     private const HISTORY_WEATHER_URI = "https://api.weatherapi.com/v1/history.json?lang=pl&q=%s&unixdt=%s&unixend_dt=%s&tp=%s";
     private const CURRENT_WEATHER_URI = "https://api.weatherapi.com/v1/current.json?lang=pl&q=%s";
@@ -27,10 +27,10 @@ class WeatherApiRepository
     }
 
     /**
-     * Unfortunately history data isn't available for free
+     * Unfortunately history data isn't available for free for this API
      * Currently there is free tier for 14 days (from 4.03)
      *
-     * @return array<int, WeatherData>
+     * @return WeatherData[]
      */
     public function getHistoricData(string $lat, string $lon, string $start, string $end, int $interval = 60): array
     {

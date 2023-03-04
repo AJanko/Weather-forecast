@@ -5,10 +5,9 @@ namespace App\Repository;
 use App\Entity\WeatherData;
 use App\Service\OpenWeather;
 
-class OpenWeatherRepository
+class OpenWeatherRepository implements WeatherRepositoryInterface
 {
     private const CURRENT_WEATHER_URI = "https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s";
-
     private const HISTORY_WEATHER_URI = "https://history.openweathermap.org/data/2.5/history/city?lat=%s&lon=%s&start=%s&end=%s&type=hour";
 
     private OpenWeather $client;
@@ -32,9 +31,9 @@ class OpenWeatherRepository
     /**
      * Unfortunately history data isn't available for free
      *
-     * @return array<int, WeatherData>
+     * @return WeatherData[]
      */
-    public function getHistoricData(string $lat, string $lon, string $start, string $end): array
+    public function getHistoricData(string $lat, string $lon, string $start, string $end, int $interval = 60): array
     {
         throw new \RuntimeException('Open weather historic data is not available for free');
 

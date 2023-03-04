@@ -3,8 +3,7 @@
 namespace App\Command;
 
 use App\Repository\BigQueryRepository;
-use App\Repository\OpenWeatherRepository;
-use App\Repository\WeatherApiRepository;
+use App\Repository\WeatherRepositoryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -16,7 +15,7 @@ class OpenWeatherTrainingCommand extends Command
     protected static $defaultDescription = 'Upload training data to bigquery';
 
     private BigQueryRepository   $bigQueryRepository;
-    private WeatherApiRepository $weatherApiRepository;
+    private WeatherRepositoryInterface $weatherApiRepository;
 
     private string $lat;
     private string $lon;
@@ -24,7 +23,7 @@ class OpenWeatherTrainingCommand extends Command
     /** @required */
     public function setUpDependencies(
         BigQueryRepository $bigQueryRepository,
-        WeatherApiRepository $repository,
+        WeatherRepositoryInterface $repository,
         string $lat,
         string $lon
     ) {

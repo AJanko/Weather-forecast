@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Repository\WeatherApiRepository;
 use App\Service\Predictor;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
