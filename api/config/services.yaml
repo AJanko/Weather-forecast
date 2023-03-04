@@ -43,7 +43,7 @@ services:
         arguments:
             $apiKey: '%env(WEATHER_API_API_KEY)%'
 
-    App\Repository\WeatherRepositoryInterface: '@App\Repository\WeatherApiRepository'
+    App\Repository\WeatherDataSource\WeatherRepositoryInterface: '@App\Repository\WeatherDataSource\WeatherApiRepository'
 
     GuzzleHttp\Client:
 

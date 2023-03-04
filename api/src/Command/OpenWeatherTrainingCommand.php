@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Repository\DataWarehouse\BigQueryRepository;
-use App\Repository\WeatherRepositoryInterface;
+use App\Repository\WeatherDataSource\WeatherRepositoryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

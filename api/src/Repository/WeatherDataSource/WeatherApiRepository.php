@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\WeatherDataSource;
 
 use App\Client\WeatherApi;
 use App\Entity\WeatherData;
