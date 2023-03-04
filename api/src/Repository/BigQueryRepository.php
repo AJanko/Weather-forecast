@@ -77,7 +77,7 @@ ENDSQL;
                             $weatherData->getRain(),
                             $weatherData->getVisibility(),
                             $weatherData->getTimestamp(),
-                            $weatherData->isWillRain(),
+                            (int)$weatherData->isWillRain(),
                             rand(),
                         ]
                     ) . ")";
@@ -97,7 +97,7 @@ INSERT INTO `$trainingTableId` (
     timestamp,
     will_rain,
     split_col
-) VALUES %s
+) VALUES %s;
 SQL;
 
         $query = sprintf($sql, $values);
