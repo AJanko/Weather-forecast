@@ -2,8 +2,8 @@
 
 namespace App\Repository\DataWarehouse;
 
+use App\Client\BigQuery;
 use App\Entity\WeatherData;
-use App\Service\BigQuery;
 
 class BigQueryRepository
 {

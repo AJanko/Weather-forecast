@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Client;
 
 use Google\Cloud\BigQuery\BigQueryClient;
 use Google\Cloud\BigQuery\QueryResults;

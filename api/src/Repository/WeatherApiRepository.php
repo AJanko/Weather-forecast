@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
+use App\Client\WeatherApi;
 use App\Entity\WeatherData;
-use App\Service\WeatherApi;
 
 class WeatherApiRepository implements WeatherRepositoryInterface
 {
