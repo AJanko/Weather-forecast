@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Repository\BigQueryRepository;
+use App\Repository\DataWarehouse\BigQueryRepository;
 use App\Repository\WeatherRepositoryInterface;
 
 class Predictor

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\DataWarehouse;
 
 use App\Entity\WeatherData;
 use App\Service\BigQuery;
@@ -53,6 +53,8 @@ ENDSQL;
         $result = $this->client->query($query);
 
         // rewrite later
+        var_dump($result->info()['rows'][0]['f'][0]['v']);
+
         return (bool)(float)$result->info()['rows'][0]['f'][0]['v'];
     }
 
