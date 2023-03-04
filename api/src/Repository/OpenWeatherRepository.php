@@ -27,11 +27,17 @@ class OpenWeatherRepository
         return $this->createWeatherDataInstance($data);
     }
 
-    /** @return array<int, WeatherData> */
+    /**
+     * Unfortunately history data isn't available for free
+     *
+     * @return array<int, WeatherData>
+     */
     public function getHistoricData(string $lat, string $lon, string $start, string $end): array
     {
+        throw new \RuntimeException('Open weather historic data is not available for free');
+
         $data = $this->client->requestData(
-            sprintf(self::CURRENT_WEATHER_URI, $lat, $lon, $start, $end)
+            sprintf(self::HISTORY_WEATHER_URI, $lat, $lon, $start, $end)
         );
 
         return array_map([$this, 'createWeatherDataInstance'], $data);

@@ -4,8 +4,8 @@ namespace App\Command;
 
 use App\Repository\BigQueryRepository;
 use App\Repository\OpenWeatherRepository;
+use App\Repository\WeatherApiRepository;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,8 +15,8 @@ class OpenWeatherTrainingCommand extends Command
     protected static $defaultName        = 'ow:train';
     protected static $defaultDescription = 'Upload training data to bigquery';
 
-    private BigQueryRepository    $bigQueryRepository;
-    private OpenWeatherRepository $openWeatherRepository;
+    private BigQueryRepository   $bigQueryRepository;
+    private WeatherApiRepository $weatherApiRepository;
 
     private string $lat;
     private string $lon;
@@ -24,14 +24,15 @@ class OpenWeatherTrainingCommand extends Command
     /** @required */
     public function setUpDependencies(
         BigQueryRepository $bigQueryRepository,
-        OpenWeatherRepository $openWeatherRepository,
+        WeatherApiRepository $repository,
         string $lat,
         string $lon
     ) {
-        $this->bigQueryRepository    = $bigQueryRepository;
-        $this->openWeatherRepository = $openWeatherRepository;
-        $this->lat                   = $lat;
-        $this->lon                   = $lon;
+        $this->bigQueryRepository   = $bigQueryRepository;
+        $this->weatherApiRepository = $repository;
+
+        $this->lat = $lat;
+        $this->lon = $lon;
     }
 
     protected function configure()
@@ -56,7 +57,8 @@ class OpenWeatherTrainingCommand extends Command
         $startDate = (new \DateTime("- $start days"))->getTimestamp();
         $endDate   = (new \DateTime("- $end days"))->getTimestamp();
 
-        $historicData = $this->openWeatherRepository->getHistoricData($this->lat, $this->lon, $startDate, $endDate);
+        $historicData = $this->weatherApiRepository->getHistoricData($this->lat, $this->lon, $startDate, $endDate);
+
         $this->bigQueryRepository->uploadTrainingData($historicData);
 
         return Command::SUCCESS;

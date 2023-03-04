@@ -25,7 +25,8 @@ class WeatherData
         float $windGust,
         float $rain,
         float $visibility,
-        int $timestamp
+        int $timestamp,
+        ?bool $willRain = null
     ) {
         $this->temperature      = $temperature;
         $this->feelTemperature  = $feelTemperature;
@@ -36,6 +37,7 @@ class WeatherData
         $this->rain             = $rain;
         $this->visibility       = $visibility;
         $this->timestamp        = $timestamp;
+        $this->willRain         = $willRain;
     }
 
     public function getTemperature(): float

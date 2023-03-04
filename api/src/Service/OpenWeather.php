@@ -2,13 +2,10 @@
 
 namespace App\Service;
 
-use App\Entity\WeatherData;
 use GuzzleHttp\Client;
 
 class OpenWeather
 {
-    private const URI = "https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&appid=%s";
-
     private Client $client;
     private string $apiKey;
 
