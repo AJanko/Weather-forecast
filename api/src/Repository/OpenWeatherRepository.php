@@ -20,6 +20,8 @@ class OpenWeatherRepository
 
     public function getCurrentWeather(string $lat, string $lon): WeatherData
     {
+        throw new \RuntimeException('Open weather current data does not have all necessary data currently');
+
         $data = $this->client->requestData(
             sprintf(self::CURRENT_WEATHER_URI, $lat, $lon)
         );
@@ -48,7 +50,7 @@ class OpenWeatherRepository
         return new WeatherData(
             $data['main']['temp'],
             $data['main']['feels_like'],
-            $data['main']['relative_humidity'],
+            $data['main']['humidity'],
             $data['clouds']['all'],
             $data['wind']['speed'],
             $data['wind']['gust'],

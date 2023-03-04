@@ -3,17 +3,17 @@
 namespace App\Service;
 
 use App\Repository\BigQueryRepository;
-use App\Repository\OpenWeatherRepository;
+use App\Repository\WeatherApiRepository;
 
 class Predictor
 {
-    private BigQueryRepository    $repository;
-    private OpenWeatherRepository $openWeather;
+    private BigQueryRepository   $repository;
+    private WeatherApiRepository $weatherApi;
 
-    public function __construct(BigQueryRepository $repository, OpenWeatherRepository $openWeather)
+    public function __construct(BigQueryRepository $repository, WeatherApiRepository $weatherApi)
     {
         $this->repository  = $repository;
-        $this->openWeather = $openWeather;
+        $this->openWeather = $weatherApi;
     }
 
     public function predict(string $lat, string $lon): bool
