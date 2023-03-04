@@ -2,24 +2,24 @@
 
 namespace App\Service;
 
+use App\Repository\DataWarehouse\BigQueryRepository;
+use App\Repository\WeatherDataSource\WeatherRepositoryInterface;
+
 class Predictor
 {
-    /** @param BigQuery $bigQuery */
-    private $bigQuery;
-    /** @param OpenWeather $openWeather */
-    private $openWeather;
+    private BigQueryRepository         $repository;
+    private WeatherRepositoryInterface $weatherApi;
 
-    public function __construct(BigQuery $bigQuery, OpenWeather $openWeather)
+    public function __construct(BigQueryRepository $repository, WeatherRepositoryInterface $weatherApi)
     {
-        $this->bigQuery    = $bigQuery;
-        $this->openWeather = $openWeather;
+        $this->repository = $repository;
+        $this->weatherApi = $weatherApi;
     }
 
     public function predict(string $lat, string $lon): bool
     {
-        $currentWeather = $this->openWeather->getCurrentWeather($lat, $lon);
-        $mappedWeather  = WeatherDataMapper::map($currentWeather);
+        $currentWeather = $this->weatherApi->getCurrentWeather($lat, $lon);
 
-        return $this->bigQuery->getWeatherPrediction($mappedWeather);
+        return $this->repository->getWeatherPrediction($currentWeather);
     }
 }

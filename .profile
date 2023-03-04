@@ -17,3 +17,7 @@ getip() {
 wTest() {
     php api/bin/console bq:test
 }
+
+wTrain () {
+    php api/bin/console ow:train $*
+}
