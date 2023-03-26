@@ -139,4 +139,20 @@ class WeatherData
     {
         $this->timestamp = $timestamp;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'temperature'      => $this->getTemperature(),
+            'feelTemperature'  => $this->getFeelTemperature(),
+            'relativeHumidity' => $this->getRelativeHumidity(),
+            'cloudCover'       => $this->getCloudCover(),
+            'windSpeed'        => $this->getWindSpeed(),
+            'windGust'         => $this->getWindGust(),
+            'rain'             => $this->getRain(),
+            'visibility'       => $this->getVisibility(),
+            'timestamp'        => $this->getTimestamp(),
+            'willRain'         => $this->isWillRain(),
+        ];
+    }
 }

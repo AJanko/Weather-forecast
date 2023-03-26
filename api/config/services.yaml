@@ -29,6 +29,11 @@ services:
                 projectId: '%env(BIG_QUERY_PROJECT_ID)%'
                 keyFilePath: '%kernel.project_dir%/config/.google-key.json'
 
+    App\Repository\LocalWarehouse\LocalDataRepository:
+        arguments:
+            $trainingPath: '%kernel.project_dir%/vars/data/training.json'
+            $testingPath: '%kernel.project_dir%/vars/data/testing.json'
+
     App\Repository\DataWarehouse\BigQueryRepository:
         arguments:
             $projectId: '%env(BIG_QUERY_PROJECT_ID)%'

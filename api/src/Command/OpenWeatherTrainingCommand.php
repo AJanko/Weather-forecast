@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Repository\DataWarehouse\BigQueryRepository;
+use App\Repository\LocalWarehouse\LocalDataRepository;
 use App\Repository\WeatherDataSource\WeatherRepositoryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,7 +15,7 @@ class OpenWeatherTrainingCommand extends Command
     protected static $defaultName        = 'ow:train';
     protected static $defaultDescription = 'Upload training data to bigquery';
 
-    private BigQueryRepository   $bigQueryRepository;
+    private LocalDataRepository        $localDataRepository;
     private WeatherRepositoryInterface $weatherApiRepository;
 
     private string $lat;
@@ -22,12 +23,12 @@ class OpenWeatherTrainingCommand extends Command
 
     /** @required */
     public function setUpDependencies(
-        BigQueryRepository $bigQueryRepository,
+        LocalDataRepository $localDataRepository,
         WeatherRepositoryInterface $repository,
         string $lat,
         string $lon
     ) {
-        $this->bigQueryRepository   = $bigQueryRepository;
+        $this->localDataRepository  = $localDataRepository;
         $this->weatherApiRepository = $repository;
 
         $this->lat = $lat;
@@ -40,7 +41,8 @@ class OpenWeatherTrainingCommand extends Command
 
         $this
             ->addOption('start', 'st', InputOption::VALUE_REQUIRED)
-            ->addOption('end', 'end', InputOption::VALUE_REQUIRED);
+            ->addOption('end', 'end', InputOption::VALUE_REQUIRED)
+            ->addOption('test-data', 't', InputOption::VALUE_NEGATABLE, '', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -58,7 +60,12 @@ class OpenWeatherTrainingCommand extends Command
 
         $historicData = $this->weatherApiRepository->getHistoricData($this->lat, $this->lon, $startDate, $endDate);
 
-        $this->bigQueryRepository->uploadTrainingData($historicData);
+        $test = $input->getOption('test-data');
+        if ($test) {
+            $this->localDataRepository->uploadTestingData($historicData);
+        } else {
+            $this->localDataRepository->uploadTrainingData($historicData);
+        }
 
         return Command::SUCCESS;
     }
