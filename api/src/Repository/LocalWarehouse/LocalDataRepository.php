@@ -27,6 +27,20 @@ class LocalDataRepository
         return $this->saveData($this->testingPath, $data);
     }
 
+    public function getTrainingData(): array
+    {
+        $data = $this->getCurrentData($this->trainingPath);
+
+        return $this->mapDataToInstances($data);
+    }
+
+    public function getTestingData(): array
+    {
+        $data = $this->getCurrentData($this->testingPath);
+
+        return $this->mapDataToInstances($data);
+    }
+
     private function saveData(string $path, array $data): int
     {
         $currentData = $this->getCurrentData($path);
@@ -60,5 +74,11 @@ class LocalDataRepository
         }
 
         return json_decode($json, true);
+    }
+
+    /** @return WeatherData[] */
+    private function mapDataToInstances(array $data): array
+    {
+        return array_map(fn (array $wd) => WeatherData::fromArray($wd), $data);
     }
 }

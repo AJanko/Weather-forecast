@@ -155,4 +155,39 @@ class WeatherData
             'willRain'         => $this->isWillRain(),
         ];
     }
+
+    public static function fromArray(array $data): WeatherData
+    {
+        return new self(
+            $data['temperature'],
+            $data['feelTemperature'],
+            $data['relativeHumidity'],
+            $data['cloudCover'],
+            $data['windSpeed'],
+            $data['windGust'],
+            $data['rain'],
+            $data['visibility'],
+            $data['timestamp'],
+            $data['willRain']
+        );
+    }
+
+    public function getSamplesArray(): array
+    {
+        return [
+            $this->getTemperature(),
+            $this->getFeelTemperature(),
+            $this->getRelativeHumidity(),
+            $this->getCloudCover(),
+            $this->getWindSpeed(),
+            $this->getWindGust(),
+            $this->getVisibility(),
+            $this->getTimestamp(),
+        ];
+    }
+
+    public function getTarget(): float
+    {
+        return $this->getRain();
+    }
 }

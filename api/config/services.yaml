@@ -48,6 +48,10 @@ services:
         arguments:
             $apiKey: '%env(WEATHER_API_API_KEY)%'
 
+    App\Client\PHPML:
+        arguments:
+            $pathToModel: '%kernel.project_dir%/vars/model/wp.est'
+
     App\Repository\WeatherDataSource\WeatherRepositoryInterface: '@App\Repository\WeatherDataSource\WeatherApiRepository'
 
     GuzzleHttp\Client:
