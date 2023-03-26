@@ -9,8 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class WeatherController extends AbstractFOSRestController
 {
-    const WILL_RAIN = "There will be rain today";
-    const WONT_RAIN = "No rain for today :)";
+    const RAIN_MSG = "Today there will be: %smm of rain";
 
     private Predictor $predictor;
 
@@ -22,6 +21,8 @@ class WeatherController extends AbstractFOSRestController
     /** @Rest\Get("/predict/{lat}/{lon}", name="predict_weather") */
     public function getPrediction(string $lat, string $lon): JsonResponse
     {
-        return $this->json($this->predictor->predict($lat, $lon) ? self::WILL_RAIN : self::WONT_RAIN);
+        $rain = $this->predictor->predict($lat, $lon);
+
+        return $this->json(sprintf(self::RAIN_MSG, $rain));
     }
 }

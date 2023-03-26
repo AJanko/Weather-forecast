@@ -17,7 +17,7 @@ class Predictor
         $this->weatherApi = $weatherApi;
     }
 
-    public function predict(string $lat, string $lon): bool
+    public function predict(string $lat, string $lon): float
     {
         $currentWeather = $this->weatherApi->getCurrentWeather($lat, $lon);
 
