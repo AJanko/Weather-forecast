@@ -7,12 +7,12 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PHPMLTrainCommand
+class PHPMLEvaluateCommand extends Command
 {
     private PHPMLRepository $repository;
 
-    protected static $defaultName        = 'ml:train';
-    protected static $defaultDescription = 'Train model using stored train data';
+    protected static $defaultName        = 'ml:evaluate';
+    protected static $defaultDescription = 'Evaluate model';
 
     /** @required */
     public function setDependencies(PHPMLRepository $repository)
@@ -20,9 +20,11 @@ class PHPMLTrainCommand
         $this->repository = $repository;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->repository->trainModel();
+        $result = $this->repository->evaluateModel();
+
+        $output->writeln("The model evaluation rate is: $result");
 
         return Command::SUCCESS;
     }
