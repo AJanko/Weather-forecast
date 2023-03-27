@@ -25,13 +25,17 @@ class PHPMLRepository
         $this->client->saveModel($model);
     }
 
-    public function trainModel(): void
+    public function trainModel(): int
     {
         $model     = $this->client->getModel();
         $trainData = $this->localDataRepository->getTrainingData();
         [$samples, $targets] = $this->splitIntoSamplesAndTargets($trainData);
 
         $model->train($samples, $targets);
+
+        $this->client->saveModel($model);
+
+        return count($samples);
     }
 
     public function evaluateModel(): float
