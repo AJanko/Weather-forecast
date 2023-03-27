@@ -15,12 +15,12 @@ class PHPMLInitializeCommand extends Command
     protected static $defaultDescription = 'Initialize model';
 
     /** @required */
-    public function setDependencies(PHPMLRepository $repository)
+    public function setDependencies(PHPMLRepository $repository): void
     {
         $this->repository = $repository;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->repository->initializeModel();
 

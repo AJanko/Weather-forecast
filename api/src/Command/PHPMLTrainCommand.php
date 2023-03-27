@@ -15,12 +15,12 @@ class PHPMLTrainCommand extends Command
     protected static $defaultDescription = 'Train model using stored train data';
 
     /** @required */
-    public function setDependencies(PHPMLRepository $repository)
+    public function setDependencies(PHPMLRepository $repository): void
     {
         $this->repository = $repository;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $count = $this->repository->trainModel();
 

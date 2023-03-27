@@ -53,7 +53,7 @@ class PHPMLRepository
         return $this->predictFromSamplesArray($weatherData->getSamplesArray());
     }
 
-    private function predictFromSamplesArray(array $samples)
+    private function predictFromSamplesArray(array $samples): float
     {
         $model = $this->client->getModel();
 

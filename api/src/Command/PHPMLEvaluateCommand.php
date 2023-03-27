@@ -15,7 +15,7 @@ class PHPMLEvaluateCommand extends Command
     protected static $defaultDescription = 'Evaluate model';
 
     /** @required */
-    public function setDependencies(PHPMLRepository $repository)
+    public function setDependencies(PHPMLRepository $repository): void
     {
         $this->repository = $repository;
     }
