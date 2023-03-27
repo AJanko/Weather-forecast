@@ -54,6 +54,8 @@ services:
 
     App\Repository\WeatherDataSource\WeatherRepositoryInterface: '@App\Repository\WeatherDataSource\WeatherApiRepository'
 
+    Phpml\ModelManager:
+
     GuzzleHttp\Client:
 
     # add more service definitions when explicit configuration is needed
