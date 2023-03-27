@@ -22,7 +22,9 @@ class PHPMLTrainCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->repository->trainModel();
+        $count = $this->repository->trainModel();
+
+        $output->writeln("Model trained with $count records");
 
         return Command::SUCCESS;
     }
