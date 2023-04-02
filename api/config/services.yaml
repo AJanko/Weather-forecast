@@ -58,6 +58,9 @@ services:
         arguments:
             $dirPath: '%kernel.project_dir%/vars/evaluation'
 
+    App\Predictor\PredictorRepositoryInterface:
+        alias: App\Repository\PHPML\PHPMLRepository
+
     Phpml\ModelManager:
 
     GuzzleHttp\Client:

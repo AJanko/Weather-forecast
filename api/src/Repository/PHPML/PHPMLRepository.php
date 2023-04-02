@@ -4,11 +4,12 @@ namespace App\Repository\PHPML;
 
 use App\Client\PHPML;
 use App\Entity\WeatherData;
+use App\Predictor\PredictorRepositoryInterface;
 use App\Renderer\PlotRenderer;
 use App\Repository\LocalWarehouse\LocalDataRepository;
 use Phpml\Regression\LeastSquares;
 
-class PHPMLRepository
+class PHPMLRepository implements PredictorRepositoryInterface
 {
     private PHPML               $client;
     private LocalDataRepository $localDataRepository;
@@ -50,9 +51,9 @@ class PHPMLRepository
         $this->plotRenderer->drawTargetsCompare($testTargets, $predictedTargets);
     }
 
-    public function predict(WeatherData $weatherData): float
+    public function predict(WeatherData $currentWeather): float
     {
-        return $this->predictFromSamplesArray($weatherData->getSamplesArray());
+        return $this->predictFromSamplesArray($currentWeather->getSamplesArray());
     }
 
     private function predictFromSamplesArray(array $samples): float

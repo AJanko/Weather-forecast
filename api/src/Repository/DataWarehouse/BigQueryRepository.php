@@ -4,8 +4,9 @@ namespace App\Repository\DataWarehouse;
 
 use App\Client\BigQuery;
 use App\Entity\WeatherData;
+use App\Predictor\PredictorRepositoryInterface;
 
-class BigQueryRepository
+class BigQueryRepository implements PredictorRepositoryInterface
 {
 
     private BigQuery $client;
@@ -21,7 +22,7 @@ class BigQueryRepository
         $this->projectId       = $projectId;
     }
 
-    public function getWeatherPrediction(WeatherData $currentWeather): bool
+    public function predict(WeatherData $currentWeather): bool
     {
         $modelId = $this->getStructureId($this->modelId);
 
