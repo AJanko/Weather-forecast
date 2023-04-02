@@ -5,18 +5,20 @@ namespace App\Repository\PHPML;
 use App\Client\PHPML;
 use App\Entity\WeatherData;
 use App\Repository\LocalWarehouse\LocalDataRepository;
-use Phpml\Metric\Accuracy;
+use App\Service\PlotRenderer;
 use Phpml\Regression\LeastSquares;
 
 class PHPMLRepository
 {
     private PHPML               $client;
     private LocalDataRepository $localDataRepository;
+    private PlotRenderer        $plotRenderer;
 
-    public function __construct(PHPML $client, LocalDataRepository $localDataRepository)
+    public function __construct(PHPML $client, LocalDataRepository $localDataRepository, PlotRenderer $plotRenderer)
     {
         $this->client              = $client;
         $this->localDataRepository = $localDataRepository;
+        $this->plotRenderer        = $plotRenderer;
     }
 
     public function initializeModel(): void
@@ -38,14 +40,14 @@ class PHPMLRepository
         return count($samples);
     }
 
-    public function evaluateModel(): float
+    public function evaluateModel(): void
     {
         $testData = $this->localDataRepository->getTestingData();
         [$testSamples, $testTargets] = $this->splitIntoSamplesAndTargets($testData);
 
         $predictedTargets = array_map(fn(array $sample) => $this->predictFromSamplesArray($sample), $testSamples);
 
-        return Accuracy::score($testTargets, $predictedTargets);
+        $this->plotRenderer->drawTargetsCompare($testTargets, $predictedTargets);
     }
 
     public function predict(WeatherData $weatherData): float
