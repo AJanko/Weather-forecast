@@ -54,6 +54,10 @@ services:
 
     App\Repository\WeatherDataSource\WeatherRepositoryInterface: '@App\Repository\WeatherDataSource\WeatherApiRepository'
 
+    App\Service\PlotRenderer:
+        arguments:
+            $dirPath: '%kernel.project_dir%/vars/evaluation'
+
     Phpml\ModelManager:
 
     GuzzleHttp\Client:
