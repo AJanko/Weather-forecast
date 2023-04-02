@@ -20,6 +20,8 @@ class PlotRenderer
         $graph->SetScale('textlin');
         $graph->title->Set('Compare targets');
         $graph->yaxis->SetTitle('rain (mm)');
+        $graph->xaxis->SetTitle('index');
+        $graph->xaxis->HideLabels();
 
         $this->addLine($graph, $targets1, 'red');
         $this->addLine($graph, $targets2, 'blue');
