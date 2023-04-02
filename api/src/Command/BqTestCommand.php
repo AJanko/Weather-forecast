@@ -13,7 +13,9 @@ class BqTestCommand extends Command
     const WONT_RAIN = 'It won\'t rain later today';
 
     protected static $defaultName        = 'bq:test';
-    protected static $defaultDescription = 'Test connection to big query API';
+    protected static $defaultDescription = <<<STRING
+Test connection to big query API. It will return prediction for predefined destination
+STRING;
 
     private Predictor $predictor;
 

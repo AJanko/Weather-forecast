@@ -13,7 +13,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class OpenWeatherTrainingCommand extends Command
 {
     protected static $defaultName        = 'ow:train';
-    protected static $defaultDescription = 'Upload training data to local file';
+    protected static $defaultDescription = <<<STRING
+Upload training/testing data to local file
+If file already exists it will be overwritten
+Use "start" and "end" parameters with positive integer numbers to set date boundaries for sourcing the weather data e.g.
+--start=50 --end=10  - it will source weather data starting from 50 days ago until 10 days ago
+To source testing data instead of training one use option "--test-data"
+STRING;
 
     private LocalDataRepository        $localDataRepository;
     private WeatherRepositoryInterface $weatherApiRepository;
