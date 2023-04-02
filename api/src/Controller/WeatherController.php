@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\Predictor;
+use App\Predictor\Predictor;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\JsonResponse;
