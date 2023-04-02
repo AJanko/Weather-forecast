@@ -1,24 +1,15 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\PHPML;
 
-use App\Repository\PHPML\PHPMLRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PHPMLInitializeCommand extends Command
+class PHPMLInitializeCommand extends AbstractPHPMLCommand
 {
-    private PHPMLRepository $repository;
-
     protected static $defaultName        = 'ml:create';
     protected static $defaultDescription = 'Initialize model';
-
-    /** @required */
-    public function setDependencies(PHPMLRepository $repository): void
-    {
-        $this->repository = $repository;
-    }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
