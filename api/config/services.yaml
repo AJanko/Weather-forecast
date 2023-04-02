@@ -54,7 +54,7 @@ services:
 
     App\Repository\WeatherDataSource\WeatherRepositoryInterface: '@App\Repository\WeatherDataSource\WeatherApiRepository'
 
-    App\Service\PlotRenderer:
+    App\Renderer\PlotRenderer:
         arguments:
             $dirPath: '%kernel.project_dir%/vars/evaluation'
 

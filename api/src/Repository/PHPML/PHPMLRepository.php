@@ -4,8 +4,8 @@ namespace App\Repository\PHPML;
 
 use App\Client\PHPML;
 use App\Entity\WeatherData;
+use App\Renderer\PlotRenderer;
 use App\Repository\LocalWarehouse\LocalDataRepository;
-use App\Service\PlotRenderer;
 use Phpml\Regression\LeastSquares;
 
 class PHPMLRepository

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Renderer;
 
 use Amenadiel\JpGraph\Graph\Graph;
 use Amenadiel\JpGraph\Plot\LinePlot;
@@ -17,7 +17,7 @@ class PlotRenderer
     public function drawTargetsCompare(array $targets1, array $targets2): void
     {
         $graph = new Graph(2000, 200);
-        $graph->SetScale('intlin');
+        $graph->SetScale('textlin');
         $graph->title->Set('Compare targets');
 
         $this->addLine($graph, $targets1, 'red');
