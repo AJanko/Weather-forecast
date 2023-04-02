@@ -22,9 +22,7 @@ class PHPMLEvaluateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $result = $this->repository->evaluateModel();
-
-        $output->writeln("The model evaluation rate is: $result");
+        $this->repository->evaluateModel();
 
         return Command::SUCCESS;
     }
