@@ -4,5 +4,5 @@
     <string name="response_fail">That didn\'t work!</string>
     <string name="lat">50.049683</string>
     <string name="lon">19.944544</string>
-    <string name="predict_url">http://192.168.33.9:8080/predict/%1$s/%1$s</string>
+    <string name="predict_url">http://10.44.0.16:8080/predict/%1$s/%1$s</string>
 </resources>

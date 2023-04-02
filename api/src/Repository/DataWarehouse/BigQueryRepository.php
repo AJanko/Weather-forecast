@@ -3,9 +3,11 @@
 namespace App\Repository\DataWarehouse;
 
 use App\Client\BigQuery;
+use App\Entity\ModelEntityInterface;
 use App\Entity\WeatherData;
+use App\Predictor\PredictorRepositoryInterface;
 
-class BigQueryRepository
+class BigQueryRepository implements PredictorRepositoryInterface
 {
 
     private BigQuery $client;
@@ -21,18 +23,19 @@ class BigQueryRepository
         $this->projectId       = $projectId;
     }
 
-    public function getWeatherPrediction(WeatherData $currentWeather): bool
+    /** @var WeatherData $currentData */
+    public function predict(ModelEntityInterface $currentData): bool
     {
         $modelId = $this->getStructureId($this->modelId);
 
-        $temp       = $currentWeather->getTemperature();
-        $feelTemp   = $currentWeather->getFeelTemperature();
-        $humid      = $currentWeather->getRelativeHumidity();
-        $clouds     = $currentWeather->getCloudCover();
-        $windSpeed  = $currentWeather->getWindSpeed();
-        $windGust   = $currentWeather->getWindGust();
-        $rain       = $currentWeather->getRain();
-        $visibility = $currentWeather->getVisibility();
+        $temp       = $currentData->getTemperature();
+        $feelTemp   = $currentData->getFeelTemperature();
+        $humid      = $currentData->getRelativeHumidity();
+        $clouds     = $currentData->getCloudCover();
+        $windSpeed  = $currentData->getWindSpeed();
+        $windGust   = $currentData->getWindGust();
+        $rain       = $currentData->getRain();
+        $visibility = $currentData->getVisibility();
 
         $query = <<<ENDSQL
 SELECT * FROM ML.PREDICT(

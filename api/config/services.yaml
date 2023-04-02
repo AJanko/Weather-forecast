@@ -29,6 +29,11 @@ services:
                 projectId: '%env(BIG_QUERY_PROJECT_ID)%'
                 keyFilePath: '%kernel.project_dir%/config/.google-key.json'
 
+    App\Repository\LocalWarehouse\LocalDataRepository:
+        arguments:
+            $trainingPath: '%kernel.project_dir%/vars/data/mapped_training.json'
+            $testingPath: '%kernel.project_dir%/vars/data/mapped_testing.json'
+
     App\Repository\DataWarehouse\BigQueryRepository:
         arguments:
             $projectId: '%env(BIG_QUERY_PROJECT_ID)%'
@@ -43,7 +48,20 @@ services:
         arguments:
             $apiKey: '%env(WEATHER_API_API_KEY)%'
 
+    App\Client\PHPML:
+        arguments:
+            $pathToModel: '%kernel.project_dir%/vars/model/wp.est'
+
     App\Repository\WeatherDataSource\WeatherRepositoryInterface: '@App\Repository\WeatherDataSource\WeatherApiRepository'
+
+    App\Renderer\PlotRenderer:
+        arguments:
+            $dirPath: '%kernel.project_dir%/vars/evaluation'
+
+    App\Predictor\PredictorRepositoryInterface:
+        alias: App\Repository\PHPML\PHPMLRepository
+
+    Phpml\ModelManager:
 
     GuzzleHttp\Client:
 

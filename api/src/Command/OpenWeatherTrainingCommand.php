@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Repository\DataWarehouse\BigQueryRepository;
+use App\Repository\LocalWarehouse\LocalDataRepository;
 use App\Repository\WeatherDataSource\WeatherRepositoryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,9 +13,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 class OpenWeatherTrainingCommand extends Command
 {
     protected static $defaultName        = 'ow:train';
-    protected static $defaultDescription = 'Upload training data to bigquery';
+    protected static $defaultDescription = <<<STRING
+Upload training/testing data to local file
+If file already exists it will be overwritten
+Use "start" and "end" parameters with positive integer numbers to set date boundaries for sourcing the weather data e.g.
+--start=50 --end=10  - it will source weather data starting from 50 days ago until 10 days ago
+To source testing data instead of training one use option "--test-data"
+STRING;
 
-    private BigQueryRepository   $bigQueryRepository;
+    private LocalDataRepository        $localDataRepository;
     private WeatherRepositoryInterface $weatherApiRepository;
 
     private string $lat;
@@ -22,12 +29,12 @@ class OpenWeatherTrainingCommand extends Command
 
     /** @required */
     public function setUpDependencies(
-        BigQueryRepository $bigQueryRepository,
+        LocalDataRepository $localDataRepository,
         WeatherRepositoryInterface $repository,
         string $lat,
         string $lon
     ) {
-        $this->bigQueryRepository   = $bigQueryRepository;
+        $this->localDataRepository  = $localDataRepository;
         $this->weatherApiRepository = $repository;
 
         $this->lat = $lat;
@@ -40,7 +47,8 @@ class OpenWeatherTrainingCommand extends Command
 
         $this
             ->addOption('start', 'st', InputOption::VALUE_REQUIRED)
-            ->addOption('end', 'end', InputOption::VALUE_REQUIRED);
+            ->addOption('end', 'end', InputOption::VALUE_REQUIRED)
+            ->addOption('test-data', 't', InputOption::VALUE_NEGATABLE, '', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -58,7 +66,12 @@ class OpenWeatherTrainingCommand extends Command
 
         $historicData = $this->weatherApiRepository->getHistoricData($this->lat, $this->lon, $startDate, $endDate);
 
-        $this->bigQueryRepository->uploadTrainingData($historicData);
+        $test = $input->getOption('test-data');
+        if ($test) {
+            $this->localDataRepository->uploadTestingData($historicData);
+        } else {
+            $this->localDataRepository->uploadTrainingData($historicData);
+        }
 
         return Command::SUCCESS;
     }

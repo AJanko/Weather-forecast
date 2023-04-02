@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-class WeatherData
+class WeatherData implements ModelEntityInterface
 {
     private float $temperature;
     private float $feelTemperature;
@@ -15,6 +15,7 @@ class WeatherData
     private int   $timestamp;
 
     private ?bool $willRain;  // prediction for the day after
+    private ?float $rainAvgDayAfter; // prediction for next 24hours
 
     public function __construct(
         float $temperature,
@@ -26,7 +27,8 @@ class WeatherData
         float $rain,
         float $visibility,
         int $timestamp,
-        ?bool $willRain = null
+        ?bool $willRain = null,
+        ?float $rainAvgDayAfter = null
     ) {
         $this->temperature      = $temperature;
         $this->feelTemperature  = $feelTemperature;
@@ -38,6 +40,7 @@ class WeatherData
         $this->visibility       = $visibility;
         $this->timestamp        = $timestamp;
         $this->willRain         = $willRain;
+        $this->rainAvgDayAfter  = $rainAvgDayAfter;
     }
 
     public function getTemperature(): float
@@ -138,5 +141,69 @@ class WeatherData
     public function setTimestamp(int $timestamp): void
     {
         $this->timestamp = $timestamp;
+    }
+
+    public function getRainAvgDayAfter(): ?float
+    {
+        return $this->rainAvgDayAfter;
+    }
+
+    public function setRainAvgDayAfter(?float $rainAvgDayAfter): void
+    {
+        $this->rainAvgDayAfter = $rainAvgDayAfter;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'temperature'      => $this->getTemperature(),
+            'feelTemperature'  => $this->getFeelTemperature(),
+            'relativeHumidity' => $this->getRelativeHumidity(),
+            'cloudCover'       => $this->getCloudCover(),
+            'windSpeed'        => $this->getWindSpeed(),
+            'windGust'         => $this->getWindGust(),
+            'rain'             => $this->getRain(),
+            'visibility'       => $this->getVisibility(),
+            'timestamp'        => $this->getTimestamp(),
+            'willRain'         => $this->isWillRain(),
+            'rainAvgDayAfter'  => $this->getRainAvgDayAfter(),
+        ];
+    }
+
+    public static function fromArray(array $data): WeatherData
+    {
+        return new self(
+            $data['temperature'],
+            $data['feelTemperature'],
+            $data['relativeHumidity'],
+            $data['cloudCover'],
+            $data['windSpeed'],
+            $data['windGust'],
+            $data['rain'],
+            $data['visibility'],
+            $data['timestamp'],
+            $data['willRain'],
+            $data['rainAvgDayAfter']
+        );
+    }
+
+    public function getSamplesArray(): array
+    {
+        return [
+            $this->getTemperature(),
+            $this->getFeelTemperature(),
+            $this->getRelativeHumidity(),
+            $this->getCloudCover(),
+            $this->getWindSpeed(),
+            $this->getWindGust(),
+            $this->getVisibility(),
+            $this->getTimestamp(),
+            $this->getRain(),
+        ];
+    }
+
+    public function getTarget(): float
+    {
+        return $this->getRainAvgDayAfter();
     }
 }
