@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class OpenWeatherTrainingCommand extends Command
 {
     protected static $defaultName        = 'ow:train';
-    protected static $defaultDescription = 'Upload training data to bigquery';
+    protected static $defaultDescription = 'Upload training data to local file';
 
     private LocalDataRepository        $localDataRepository;
     private WeatherRepositoryInterface $weatherApiRepository;
