@@ -2,7 +2,7 @@
 
 namespace App\Predictor;
 
-use App\Entity\WeatherData;
+use App\Entity\ModelEntityInterface;
 
 interface PredictorRepositoryInterface
 {
@@ -11,5 +11,5 @@ interface PredictorRepositoryInterface
      *
      * @return float|bool
      */
-    public function predict(WeatherData $currentWeather);
+    public function predict(ModelEntityInterface $currentData);
 }

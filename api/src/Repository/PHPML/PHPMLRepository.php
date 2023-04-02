@@ -3,7 +3,7 @@
 namespace App\Repository\PHPML;
 
 use App\Client\PHPML;
-use App\Entity\WeatherData;
+use App\Entity\ModelEntityInterface;
 use App\Predictor\PredictorRepositoryInterface;
 use App\Renderer\PlotRenderer;
 use App\Repository\LocalWarehouse\LocalDataRepository;
@@ -51,9 +51,9 @@ class PHPMLRepository implements PredictorRepositoryInterface
         $this->plotRenderer->drawTargetsCompare($testTargets, $predictedTargets);
     }
 
-    public function predict(WeatherData $currentWeather): float
+    public function predict(ModelEntityInterface $currentData): float
     {
-        return $this->predictFromSamplesArray($currentWeather->getSamplesArray());
+        return $this->predictFromSamplesArray($currentData->getSamplesArray());
     }
 
     private function predictFromSamplesArray(array $samples): float
@@ -63,11 +63,11 @@ class PHPMLRepository implements PredictorRepositoryInterface
         return $model->predict($samples);
     }
 
-    /** @param WeatherData[] $data */
+    /** @param ModelEntityInterface[] $data */
     private function splitIntoSamplesAndTargets(array $data): array
     {
-        $samples = array_map(fn(WeatherData $wd) => $wd->getSamplesArray(), $data);
-        $targets = array_map(fn(WeatherData $wd) => $wd->getTarget(), $data);
+        $samples = array_map(fn(ModelEntityInterface $me) => $me->getSamplesArray(), $data);
+        $targets = array_map(fn(ModelEntityInterface $me) => $me->getTarget(), $data);
 
         return [$samples, $targets];
     }
