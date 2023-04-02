@@ -2,7 +2,7 @@
 
 $day = 86400;
 $file = 'testing';
-//$file = 'testing';
+//$file = 'training';
 $json = file_get_contents(__DIR__ . "/../data/$file.json");
 
 $data = json_decode($json, true);
@@ -29,5 +29,9 @@ foreach ($sorted as $key => &$weatherData) {
         $weatherData['rainAvgDayAfter'] = array_sum($rainGroup) / count($rainGroup);
     }
 }
+
+$sorted = array_filter($sorted, function (array $data) {
+    return isset($data['rainAvgDayAfter']);
+});
 
 file_put_contents(__DIR__ . "/../data/mapped_$file.json", json_encode(array_values($sorted)));
