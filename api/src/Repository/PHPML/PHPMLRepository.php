@@ -28,11 +28,11 @@ class PHPMLRepository implements PredictorRepositoryInterface
         $this->client->saveModel($model);
     }
 
-    public function trainModel(): int
+    public function trainModel(int $probes): int
     {
         $model     = $this->client->getModel();
         $trainData = $this->localDataRepository->getTrainingData();
-        [$samples, $targets] = $this->splitIntoSamplesAndTargets($trainData);
+        [$samples, $targets] = $this->splitIntoSamplesAndTargets($probes, $trainData);
 
         $model->train($samples, $targets);
 
@@ -41,10 +41,13 @@ class PHPMLRepository implements PredictorRepositoryInterface
         return count($samples);
     }
 
-    public function evaluateModel(): void
+    /**
+     * It has side effect of drawing plot
+     */
+    public function evaluateModel(int $probes): void
     {
         $testData = $this->localDataRepository->getTestingData();
-        [$testSamples, $testTargets] = $this->splitIntoSamplesAndTargets($testData);
+        [$testSamples, $testTargets] = $this->splitIntoSamplesAndTargets($probes, $testData);
 
         $predictedTargets = array_map(fn(array $sample) => $this->predictFromSamplesArray($sample), $testSamples);
 
