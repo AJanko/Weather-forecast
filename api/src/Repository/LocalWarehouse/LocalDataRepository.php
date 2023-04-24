@@ -27,6 +27,7 @@ class LocalDataRepository
         return $this->saveData($this->testingPath, $data);
     }
 
+    /** @return WeatherData[] */
     public function getTrainingData(): array
     {
         $data = $this->getCurrentData($this->trainingPath);
@@ -34,6 +35,7 @@ class LocalDataRepository
         return $this->mapDataToInstances($data);
     }
 
+    /** @return WeatherData[] */
     public function getTestingData(): array
     {
         $data = $this->getCurrentData($this->testingPath);
