@@ -31,8 +31,8 @@ services:
 
     App\Repository\LocalWarehouse\LocalDataRepository:
         arguments:
-            $trainingPath: '%kernel.project_dir%/vars/data/mapped_training.json'
-            $testingPath: '%kernel.project_dir%/vars/data/mapped_testing.json'
+            $trainingPath: '%kernel.project_dir%/vars/data/training.json'
+            $testingPath: '%kernel.project_dir%/vars/data/testing.json'
 
     App\Repository\DataWarehouse\BigQueryRepository:
         arguments:
