@@ -67,9 +67,36 @@ class PHPMLRepository implements PredictorRepositoryInterface
     }
 
     /** @param ModelEntityInterface[] $data */
-    private function splitIntoSamplesAndTargets(array $data): array
+    private function splitIntoSamplesAndTargets(int $probes, array $data): array
     {
-        $samples = array_map(fn(ModelEntityInterface $me) => $me->getSamplesArray(), $data);
+        $hour = 3600;
+        /** @var array<int, ModelEntityInterface> $indexedData */
+        $indexedData = array_combine(
+            array_map(fn(ModelEntityInterface $me) => $me->getTimestamp(), $data),
+            $data,
+        );
+
+        $samples = [];
+        foreach ($data as $item) {
+            $sampleItem = $item->getSamplesArray();
+            $i = 1;
+            $skip = false;
+            while ($i < $probes) {
+                $toMerge = $indexedData[$item->getTimestamp() - $i * $hour] ?? null;
+                if (!$toMerge) {
+                    $skip = true;
+                    break;
+                }
+
+                $sampleItem = [...$sampleItem, ...$toMerge->getSamplesArray()];
+            }
+
+            // When data isn't complete then it will be skipped
+            if (!$skip) {
+                $samples[] = $sampleItem;
+            }
+        }
+
         $targets = array_map(fn(ModelEntityInterface $me) => $me->getTarget(), $data);
 
         return [$samples, $targets];
