@@ -65,7 +65,10 @@ class PHPMLRepository implements PredictorRepositoryInterface
     {
         $model = $this->client->getModel();
 
-        return $model->predict($samples);
+        $prediction = $model->predict($samples);
+
+        // This is done to filter out negative samples and make them equal 0
+        return max($prediction, 0);
     }
 
     /** @param ModelEntityInterface[] $data */
