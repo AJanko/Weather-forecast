@@ -44,7 +44,7 @@ class PHPMLRepository implements PredictorRepositoryInterface
     /**
      * It has side effect of drawing plot
      */
-    public function evaluateModel(int $probes): void
+    public function evaluateModel(int $probes): int
     {
         $testData = $this->localDataRepository->getTestingData();
         [$testSamples, $testTargets] = $this->splitIntoSamplesAndTargets($probes, $testData);
@@ -52,6 +52,8 @@ class PHPMLRepository implements PredictorRepositoryInterface
         $predictedTargets = array_map(fn(array $sample) => $this->predictFromSamplesArray($sample), $testSamples);
 
         $this->plotRenderer->drawTargetsCompare($testTargets, $predictedTargets);
+
+        return count($testSamples);
     }
 
     public function predict(ModelEntityInterface $currentData): float
@@ -77,6 +79,7 @@ class PHPMLRepository implements PredictorRepositoryInterface
         );
 
         $samples = [];
+        $targets = [];
         foreach ($data as $item) {
             $sampleItem = $item->getSamplesArray();
             $i = 1;
@@ -89,15 +92,15 @@ class PHPMLRepository implements PredictorRepositoryInterface
                 }
 
                 $sampleItem = [...$sampleItem, ...$toMerge->getSamplesArray()];
+                $i++;
             }
 
             // When data isn't complete then it will be skipped
             if (!$skip) {
                 $samples[] = $sampleItem;
+                $targets[] = $item->getTarget();
             }
         }
-
-        $targets = array_map(fn(ModelEntityInterface $me) => $me->getTarget(), $data);
 
         return [$samples, $targets];
     }

@@ -33,8 +33,8 @@ EOF
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $probes = $input->getOption(self::PROBES_OPTION);
-        if (!is_int($probes) || $probes < self::PROBES_MIN || $probes > self::PROBES_MAX) {
+        $probes = (int)$input->getOption(self::PROBES_OPTION);
+        if ($probes < self::PROBES_MIN || $probes > self::PROBES_MAX) {
             throw new \InvalidArgumentException('Invalid argument provided. It should be integer between 1 and 10');
         }
 
@@ -43,7 +43,8 @@ EOF
         $count = $this->repository->trainModel($probes);
         $output->writeln("Model trained with $count records");
 
-        $this->repository->evaluateModel($probes);
+        $count = $this->repository->evaluateModel($probes);
+        $output->writeln("Model evaluated with $count records");
 
         return Command::SUCCESS;
     }
