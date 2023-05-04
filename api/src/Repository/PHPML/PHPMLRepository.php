@@ -28,11 +28,11 @@ class PHPMLRepository implements PredictorRepositoryInterface
         $this->client->saveModel($model);
     }
 
-    public function trainModel(): int
+    public function trainModel(int $probes): int
     {
         $model     = $this->client->getModel();
         $trainData = $this->localDataRepository->getTrainingData();
-        [$samples, $targets] = $this->splitIntoSamplesAndTargets($trainData);
+        [$samples, $targets] = $this->splitIntoSamplesAndTargets($probes, $trainData);
 
         $model->train($samples, $targets);
 
@@ -41,14 +41,19 @@ class PHPMLRepository implements PredictorRepositoryInterface
         return count($samples);
     }
 
-    public function evaluateModel(): void
+    /**
+     * It has side effect of drawing plot
+     */
+    public function evaluateModel(int $probes): int
     {
         $testData = $this->localDataRepository->getTestingData();
-        [$testSamples, $testTargets] = $this->splitIntoSamplesAndTargets($testData);
+        [$testSamples, $testTargets] = $this->splitIntoSamplesAndTargets($probes, $testData);
 
         $predictedTargets = array_map(fn(array $sample) => $this->predictFromSamplesArray($sample), $testSamples);
 
         $this->plotRenderer->drawTargetsCompare($testTargets, $predictedTargets);
+
+        return count($testSamples);
     }
 
     public function predict(ModelEntityInterface $currentData): float
@@ -60,14 +65,45 @@ class PHPMLRepository implements PredictorRepositoryInterface
     {
         $model = $this->client->getModel();
 
-        return $model->predict($samples);
+        $prediction = $model->predict($samples);
+
+        // This is done to filter out negative samples and make them equal 0
+        return max($prediction, 0);
     }
 
     /** @param ModelEntityInterface[] $data */
-    private function splitIntoSamplesAndTargets(array $data): array
+    private function splitIntoSamplesAndTargets(int $probes, array $data): array
     {
-        $samples = array_map(fn(ModelEntityInterface $me) => $me->getSamplesArray(), $data);
-        $targets = array_map(fn(ModelEntityInterface $me) => $me->getTarget(), $data);
+        $hour = 3600;
+        /** @var array<int, ModelEntityInterface> $indexedData */
+        $indexedData = array_combine(
+            array_map(fn(ModelEntityInterface $me) => $me->getTimestamp(), $data),
+            $data,
+        );
+
+        $samples = [];
+        $targets = [];
+        foreach ($data as $item) {
+            $sampleItem = $item->getSamplesArray();
+            $i = 1;
+            $skip = false;
+            while ($i < $probes) {
+                $toMerge = $indexedData[$item->getTimestamp() - $i * $hour] ?? null;
+                if (!$toMerge) {
+                    $skip = true;
+                    break;
+                }
+
+                $sampleItem = [...$sampleItem, ...$toMerge->getSamplesArray()];
+                $i++;
+            }
+
+            // When data isn't complete then it will be skipped
+            if (!$skip) {
+                $samples[] = $sampleItem;
+                $targets[] = $item->getTarget();
+            }
+        }
 
         return [$samples, $targets];
     }

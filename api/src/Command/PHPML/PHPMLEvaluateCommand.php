@@ -13,7 +13,7 @@ class PHPMLEvaluateCommand extends AbstractPHPMLCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->repository->evaluateModel();
+        $this->repository->evaluateModel(1);
 
         return Command::SUCCESS;
     }

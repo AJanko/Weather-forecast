@@ -13,7 +13,7 @@ class PHPMLTrainCommand extends AbstractPHPMLCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $count = $this->repository->trainModel();
+        $count = $this->repository->trainModel(1);
 
         $output->writeln("Model trained with $count records");
 
