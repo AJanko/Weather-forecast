@@ -32,7 +32,7 @@ STRING;
         $lon    = 19.944544;
         $result = $this->predictor->predict($lat, $lon);
 
-        $output->writeln($result ? self::WILL_RAIN : self::WONT_RAIN);
+        $output->writeln('In the following rain there will be ' . $result . 'mm of rain');
 
         return Command::SUCCESS;
     }
